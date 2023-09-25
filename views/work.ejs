@@ -1,0 +1,70 @@
+<%- include("public/header.ejs") %>
+
+<% let dailyTask = "" %>
+<div class="date-box-body">
+    <div class="date-box-containt">
+        <div class="containt-date-month">
+        <h1>Work List</h1>
+        </div>
+    </div>
+</div>
+
+<div class="work-list-container">
+    <% if (locals.todaywork && todaywork.length !== 0) { %>
+        <% todaywork.forEach(element => { %>
+            <li><%= element %></li>
+        <% }); %>
+    <% } %>
+    <% console.log(todaywork); %>
+    <div id="tasks"></div>
+    <div id="newtask">
+        <form action="/submit" method="POST">
+            <input type="hidden" name="source" value="month">
+            <input type="text" name="monthlyList" placeholder="new item">
+            <input type="submit" value="OK">
+          </form>
+    </div>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const newItemInput = document.getElementById("newItem");
+            const pushButton = document.getElementById("push");
+            const tasksContainer = document.getElementById("tasks");
+
+            pushButton.addEventListener("click", ()=>{
+                const newItemValue = newItemInput.value.trim();
+                if(newItemValue !== ""){
+                    const listItem = document.createElement("li");
+                    listItem.textContent = newItemValue;
+
+                    tasksContainer.appendChild(listItem);
+
+                    newItemInput.value = "";
+                }
+            });
+        });
+
+    </script>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const newItemInput = document.getElementById("newItem");
+            const pushButton = document.getElementById("push");
+            const tasksContainer = document.getElementById("tasks");
+
+            pushButton.addEventListener("click", ()=>{
+                const newItemValue = newItemInput.value.trim();
+                if(newItemValue !== ""){
+                    const listItem = document.createElement("li");
+                    listItem.textContent = newItemValue;
+
+                    tasksContainer.appendChild(listItem);
+
+                    newItemInput.value = "";
+                }
+            });
+        });
+
+    </script> -->
+
+<%- include("public/footer.ejs") %>

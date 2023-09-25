@@ -1,0 +1,74 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    margin: 0;
+    padding: 0;
+
+}
+
+header{
+    padding-top: 25px;
+    padding-bottom: 80px;
+    background-color: #e4e9fd;
+}
+.flex-container > i{
+    background-color: #541a8a;
+    font-size: 100px;
+}
+
+header > .flex-container{
+    display: flex;
+    list-style-type: none;
+    gap: 50px;
+    background-color: #e4e9fd;
+    color: #541a8a;
+    padding-left: 25px;
+}
+.anchor{
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+/* index ejs file */
+body{
+    background-color: #e4e9fd;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* box for current date and month */
+.date-box-container{
+    display: flex;
+    justify-content: center;
+
+}
+.date-box-containt{
+    background-color: #a782e3;
+    border-radius: 5px;
+    height: 60px;
+    width: 400px;
+    text-align: center;
+    color: white;
+}
+.containt-date-month{
+    margin-top: 8px;
+    font-size: 1.1rem;
+}
+
+
+
+
+
+/* footer file */
+footer{
+    margin-top: auto;
+}
+footer > p{
+    text-align: center;
+    font-size: 15px;
+    background-color: #a782e3;
+    padding-bottom: 6px;
+}
