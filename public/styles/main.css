@@ -5,39 +5,48 @@
 html,body{
     margin: 0;
     padding: 0;
-
 }
+
+body{
+    background-image: -webkit-linear-gradient(65deg, #a783e2 50%, #e4f3f8 50%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: serif;
+}
+
+/* header content */
 
 header{
     padding-top: 25px;
     padding-bottom: 80px;
-    background-color: #e4e9fd;
-}
-.flex-container > i{
-    background-color: #541a8a;
-    font-size: 100px;
 }
 
+/* for navbar in header */
 header > .flex-container{
     display: flex;
     list-style-type: none;
     gap: 50px;
-    background-color: #e4e9fd;
     color: #541a8a;
     padding-left: 25px;
 }
+
+/* for anchor tag in navbar */
 .anchor{
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
 }
 
-/* index ejs file */
-body{
-    background-color: #e4e9fd;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* for icon in navbar */
+.flex-container ul li i{
+    background-color: #c38ef4;
+    font-size: 100px;
+    font-weight: ;
 }
+
+
+
+/* Main content between header and footer */
 
 /* box for current date and month */
 .date-box-container{
@@ -45,7 +54,7 @@ body{
     justify-content: center;
 
 }
-.date-box-containt{
+.date-box-content{
     background-color: #a782e3;
     border-radius: 5px;
     height: 60px;
@@ -53,22 +62,57 @@ body{
     text-align: center;
     color: white;
 }
-.containt-date-month{
+.content-date-month{
     margin-top: 8px;
     font-size: 1.1rem;
 }
 
 
+/* list of the task */
+.work-list-container{
+    margin-top: 5%;
+}
+
+.work-list-container ul{
+    width: 400px;
+    background-color: white;
+    list-style: none;
+    border-radius: 5px;
+}
+
+.work-list-container li{
+    padding: 30px 10px;
+    font-size: 1.1rem;
+}
+
+
+.list{
+    display: flex;
+    justify-content: center;
+}
+
+.newItem{
+    display: flex;
+    justify-content: center;
+}
+
+#newtask{
+    width: 400px;
+    background-color: white;
+}
 
 
 
-/* footer file */
+
+/* footer content */
+
 footer{
-    margin-top: auto;
+    margin-top: auto;    
 }
 footer > p{
     text-align: center;
     font-size: 15px;
-    background-color: #a782e3;
     padding-bottom: 6px;
 }
+
+

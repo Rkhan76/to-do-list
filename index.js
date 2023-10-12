@@ -1,71 +1,123 @@
 import express from "express";
 import bodyParser from "body-parser";
+import mongoose from "mongoose";
 
 const app = express();
 const port = 3000;
 
-const today = [];
-const work = [];
-let i=0, j=0;
+//Connection
+mongoose
+.connect("mongodb://127.0.0.1:27017/to-Do-List")
+.then(()=> console.log("MongoDB Connected"))
+.catch((err) => console.log("Mongo Error", err));
 
+// Schema
+const taskSchema = new mongoose.Schema({
+    task:{
+        type: String,
+        required: true,
+    }
+  },
+  { timestamps: true}
+);
 
+//Model
+const Task = mongoose.model("task", taskSchema);
+const MonthlyTask = mongoose.model("monthlyTask", taskSchema);
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// get request for home page
-app.get("/",(req, res)=>{
-    if(today.length===0){
-        res.render("index.ejs");
-    }else{
-        res.render("index.ejs", {todaywork: today});
-    }
-    
+// home page
+app.get("/", async(req, res)=>{
+
+    try {
+        const list = await Task.find({});
+        res.render('index.ejs', { taskArray : list });
+      } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
 });
 
 
-// get request for today work list
+// today
 app.get("/today",(req, res)=>{
    res.redirect("/")
 });
 
 
 // get request for month work list
-app.get("/work",(req, res)=>{
-    if(work.length===0){
-        res.render("work.ejs");
-    }else{
-        res.render("work.ejs", {todaywork: work});
-    }
+app.get("/work",async (req, res)=>{
+
+    try {
+        const list = await MonthlyTask.find({});
+        res.render('work.ejs', { taskArray : list });
+      } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
 });
 
-// post request for adding the daily task and monthly task to array
-app.post("/submit", (req, res)=>{
+// task submission
+app.post("/submit", async (req, res)=>{
 
-    // to check the source of the file from where post request is made
-    const source = req.body.source;
+    const source = req.body.source;     // source from where post request is made
+    const todaytask = req.body.todayList; 
+     
+        try {
+            if (source === "today"){
+            if(todaytask !== ""){
+                const result =  await Task.create({
+                    task: todaytask,
+                });
     
-    if (source === "today") {
-        if(req.body !== ""){
-            today[i] = req.body["todayList"];
-            i++;
+                console.log("submitted successfully at today page");
+                res.redirect("/today");
+             }
+            }
+
+             if (source === "month"){
+                if(todaytask !== ""){
+                    const result =  await MonthlyTask.create({
+                        task: todaytask,
+                    });
+
+                    console.log("submitted successfully at work page");
+                    res.redirect("/work");
+                 }
+            }
+            
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error' });
         }
-    
-        res.redirect("/today");
-    } else if (source === "month") {
-        if(req.body !== ""){
-            work[j] = req.body["monthlyList"];
-            j++;
+
+    });
+
+
+// handling deletion
+app.post("/delete", async (req, res)=>{
+    const checkItemId = req.body.checkbox;
+    const source = req.body.listName;
+
+    try {
+        if(source === "today"){
+            await Task.findOneAndRemove(checkItemId);
+            console.log("successfully deleted form todays page");
+            res.redirect("/today");
         }
-    
-        res.redirect("/work");
+
+        if(source === "month"){
+            await MonthlyTask.findOneAndRemove(checkItemId);
+            console.log("successfully deleted form todays page");
+            res.redirect("/work");
+        }
+    } catch (error) {
+        res.status(404).json({ error: 'File not found' });
     }
-    
-    
+        
 });
 
-
+ // listening port
 app.listen(port, ()=>{
     console.log(`server is running on port ${port}.`);
 });

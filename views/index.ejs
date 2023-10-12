@@ -1,53 +1,42 @@
 <%- include("public/header.ejs") %>
     <div class="date-box-container">
-        <% const currentDate=new Date();
-        const dayOfWeek=currentDate.getDay(); <!-- 0-6 return the day of week-->
-        const dayOfMonth=currentDate.getDate(); <!-- 1-31 return the day of month-->
-        const monthNumber=currentDate.getMonth(); <!-- 0-11 month number -->
-        const daysOfWeek=["Sunday", "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday", "Saturday" ]; 
-        const monthNames=[ "January" , "February" , "March" , "April" , "May" , "June" , "July", "August" , "September" , "October" , "November" , "December" ]; %>
-        <div class="date-box-containt">
-            <div class="containt-date-month">
-            <h1><%= daysOfWeek[dayOfWeek] %>, <%= monthNames[monthNumber] %><%= dayOfMonth %></h1>
+        <%  const currentDate=new Date(); 
+            const dayOfWeek=currentDate.getDay();       <!-- 0-6 return the day of week-->
+            const dayOfMonth=currentDate.getDate();     <!-- 1-31 return the day of month-->
+            const monthNumber=currentDate.getMonth();   <!-- 0-11 month number -->
+            const daysOfWeek=["Sunday", "Monday" , "Tuesday" , "Wednesday" , "Thursday" ,"Friday", "Saturday" ];
+             const monthNames=[ "January" , "February" , "March" ,"April" , "May" , "June" , "July", "August" , "September" , "October" ,"November" , "December" ];
+        %>
+
+            <div class="date-box-content">
+                <div class="content-date-month">
+                    <h1>
+                        <%= daysOfWeek[dayOfWeek] %>, <%= monthNames[monthNumber] %> <%= dayOfMonth %>
+                    </h1>
+                </div>
             </div>
-        </div>
     </div>
 
     <div class="work-list-container">
-        <% if (locals.todaywork && todaywork.length !== 0) { %>
-            <% todaywork.forEach(element => { %>
-                <li><%= element %></li>
-            <% }); %>
-        <% } %>
+            <% if (locals.taskArray) { %>
+                <% taskArray.forEach(element=> { %>
+                    <form action="/delete" method="post">
+                        <div class="item">
+                            <input type="checkbox" name="checkbox" value="<% element._id %>" onchange= "this.form.submit()">
+                            <p>
+                                <%= element.task%>
+                            </p>
+                        </div>
+                        <input type="hidden" name="listName" value="today"></input>
+                    </form>
+                <% }); %>
+            <% } %>
 
-        <div id="tasks"></div>
-        <div id="newtask">
-            <form action="/submit" method="POST">
-                <input type="hidden" name="source" value="today">
-                <input type="text" name="todayList" placeholder="new item">
-                <input type="submit" value="OK">
-              </form>
-        </div>
-        
-    
-        <script>
-            document.addEventListener("DOMContentLoaded", function(){
-                const newItemInput = document.getElementById("newItem");
-                const pushButton = document.getElementById("push");
-                const tasksContainer = document.getElementById("tasks");
-    
-                pushButton.addEventListener("click", ()=>{
-                    const newItemValue = newItemInput.value.trim();
-                    if(newItemValue !== ""){
-                        const listItem = document.createElement("li");
-                        listItem.textContent = newItemValue;
-    
-                        tasksContainer.appendChild(listItem);
-    
-                        newItemInput.value = "";
-                    }
-                });
-            });
-    
-        </script>
+        <form class="task" action="/submit" method="POST">
+            <input type="hidden" name="source" value="today">
+            <input type="text" name="todayList" placeholder="new item" autocomplete="off"/>
+            <button type="submit" name="task">+</button>
+        </form>
+    </div>
+
     <%- include("public/footer.ejs") %>
